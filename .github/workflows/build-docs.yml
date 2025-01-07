@@ -2,8 +2,8 @@ name: Build documentation
 
 on:
   push:
-    branches: ["main","1.0","2.0"]
-  workflow_dispatch:
+    branches: ["main", "1.0", "2.0"]  # 只在 main、1.0、2.0 分支上触发
+  workflow_dispatch:  # 允许手动触发
 
 permissions:
   contents: read
@@ -20,6 +20,7 @@ jobs:
     outputs:
       algolia_artifact: ${{ steps.define-ids.outputs.algolia_artifact }}
       artifact: ${{ steps.define-ids.outputs.artifact }}
+      target_dir: ${{ steps.determine-branch.outputs.target_dir }}  # 输出目标目录
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -46,6 +47,19 @@ jobs:
           echo "artifact=$ARTIFACT" >> $GITHUB_OUTPUT
           echo "algolia_artifact=$ALGOLIA_ARTIFACT" >> $GITHUB_OUTPUT
 
+      - name: Determine target directory based on branch
+        id: determine-branch
+        run: |
+          if [[ $GITHUB_REF == refs/heads/1.0 ]]; then
+            TARGET_DIR="docs/1.0"
+          elif [[ $GITHUB_REF == refs/heads/2.0 ]]; then
+            TARGET_DIR="docs/2.0"
+          else
+            TARGET_DIR="docs"
+          fi
+          echo "TARGET_DIR=$TARGET_DIR" >> $GITHUB_ENV
+          echo "target_dir=$TARGET_DIR" >> $GITHUB_OUTPUT
+
       - name: Build docs using Writerside Docker builder
         uses: JetBrains/writerside-github-action@v4
         with:
@@ -61,6 +75,7 @@ jobs:
             artifacts/report.json
             artifacts/${{ steps.define-ids.outputs.algolia_artifact }}
           retention-days: 7
+
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -75,6 +90,7 @@ jobs:
         uses: JetBrains/writerside-checker-action@v1
         with:
           instance: ${{ env.INSTANCE }}
+
   deploy:
     environment:
       name: github-pages
@@ -91,23 +107,10 @@ jobs:
       - name: Unzip artifact
         run: unzip -O UTF-8 -qq "artifacts/${{ needs.build.outputs.artifact }}" -d dir
 
-      - name: Determine branch and target directory
-        id: determine-branch
-        run: |
-          if [[ $GITHUB_REF == refs/heads/1.0 ]]; then
-            TARGET_DIR="docs/1.0"
-          elif [[ $GITHUB_REF == refs/heads/2.0 ]]; then
-            TARGET_DIR="docs/2.0"
-          else
-            TARGET_DIR="docs"
-          fi
-          echo "TARGET_DIR=$TARGET_DIR" >> $GITHUB_ENV
-          echo "target_dir=$TARGET_DIR" >> $GITHUB_OUTPUT
-
       - name: Move files to target directory
         run: |
-          mkdir -p ${{ env.TARGET_DIR }}
-          mv dir/* ${{ env.TARGET_DIR }}
+          mkdir -p ${{ needs.build.outputs.target_dir }}
+          mv dir/* ${{ needs.build.outputs.target_dir }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -115,7 +118,7 @@ jobs:
       - name: Package and upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.TARGET_DIR }}
+          path: ${{ needs.build.outputs.target_dir }}
 
       - name: Deploy to GitHub Pages
         id: deployment
