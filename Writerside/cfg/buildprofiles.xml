@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE buildprofiles SYSTEM "https://resources.jetbrains.com/writerside/1.0/build-profiles.dtd">
+<buildprofiles xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-profiles.xsd"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <build-profile instance="hi">
+        <variables>
+            <versions-switcher>https://gist.githubusercontent.com/Ylimhs/d4bc487c6c0a8d3e76a905b002fe32a6/raw/870532467608340274563fa67e8a9ad066352036/help-versions.json</versions-switcher>
+        </variables>
+    </build-profile>
+</buildprofiles>
