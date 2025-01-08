@@ -51,11 +51,11 @@ jobs:
         id: determine-branch
         run: |
           if [[ $GITHUB_REF == refs/heads/1.0 ]]; then
-            TARGET_DIR="writerSide/1.0"
+            TARGET_DIR="WriterSide/1.0/docs"
           elif [[ $GITHUB_REF == refs/heads/2.0 ]]; then
-            TARGET_DIR="writerSide/2.0"
+            TARGET_DIR="WriterSide/2.0/docs"
           else
-            TARGET_DIR="writerSide"
+            TARGET_DIR="WriterSide/docs"
           fi
           echo "TARGET_DIR=$TARGET_DIR" >> $GITHUB_ENV
           echo "target_dir=$TARGET_DIR" >> $GITHUB_OUTPUT
