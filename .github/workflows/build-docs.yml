@@ -1,4 +1,4 @@
-name: Build and Deploy Documentation
+name: Build documentation
 
 on:
   push:
@@ -51,11 +51,11 @@ jobs:
         id: determine-branch
         run: |
           if [[ $GITHUB_REF == refs/heads/1.0 ]]; then
-            TARGET_DIR="writerSide/1.0"
+            TARGET_DIR="docs/1.0"
           elif [[ $GITHUB_REF == refs/heads/2.0 ]]; then
-            TARGET_DIR="writerSide/2.0"
+            TARGET_DIR="docs/2.0"
           else
-            TARGET_DIR="writerSide"
+            TARGET_DIR="docs"
           fi
           echo "TARGET_DIR=$TARGET_DIR" >> $GITHUB_ENV
           echo "target_dir=$TARGET_DIR" >> $GITHUB_OUTPUT
@@ -118,7 +118,7 @@ jobs:
       - name: Package and upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ needs.build.outputs.target_dir }}
+          path: ./docs
 
       - name: Deploy to GitHub Pages
         id: deployment
