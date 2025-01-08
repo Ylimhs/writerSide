@@ -118,7 +118,7 @@ jobs:
       - name: Package and upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ needs.build.outputs.target_dir }}
+          path: .
 
       - name: Deploy to GitHub Pages
         id: deployment
