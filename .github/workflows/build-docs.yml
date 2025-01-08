@@ -18,6 +18,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
+      algolia_artifact: ${{ steps.define-ids.outputs.algolia_artifact }}
+      artifact: ${{ steps.define-ids.outputs.artifact }}
       target_dir: ${{ steps.determine-branch.outputs.target_dir }}  # 输出目标目录
     steps:
       - name: Checkout repository
@@ -49,11 +51,11 @@ jobs:
         id: determine-branch
         run: |
           if [[ $GITHUB_REF == refs/heads/1.0 ]]; then
-            TARGET_DIR="writerSide/1.0"
+            TARGET_DIR="docs/1.0"
           elif [[ $GITHUB_REF == refs/heads/2.0 ]]; then
-            TARGET_DIR="writerSide/2.0"
+            TARGET_DIR="docs/2.0"
           else
-            TARGET_DIR="writerSide"
+            TARGET_DIR="docs"
           fi
           echo "TARGET_DIR=$TARGET_DIR" >> $GITHUB_ENV
           echo "target_dir=$TARGET_DIR" >> $GITHUB_OUTPUT
@@ -74,8 +76,26 @@ jobs:
             artifacts/${{ steps.define-ids.outputs.algolia_artifact }}
           retention-days: 7
 
-  deploy:
+  test:
     needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: docs
+          path: artifacts
+
+      - name: Test documentation
+        uses: JetBrains/writerside-checker-action@v1
+        with:
+          instance: ${{ env.INSTANCE }}
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: [build, test]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
@@ -91,9 +111,6 @@ jobs:
         run: |
           mkdir -p ${{ needs.build.outputs.target_dir }}
           mv dir/* ${{ needs.build.outputs.target_dir }}
-          ls ${{ needs.build.outputs.target_dir }}
-          echo "111111"
-          ls ${{ needs.build.outputs.target_dir }}../
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -101,7 +118,7 @@ jobs:
       - name: Package and upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ needs.build.outputs.target_dir }}
+          path: ./docs
 
       - name: Deploy to GitHub Pages
         id: deployment
