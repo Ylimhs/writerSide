@@ -60,7 +60,7 @@ jobs:
           fi
           echo "TARGET_DIR=$TARGET_DIR" >> $GITHUB_ENV
           echo "target_dir=$TARGET_DIR" >> $GITHUB_OUTPUT
-          ech0 $TARGET_DIR
+          ech0 "$TARGET_DIR"
 
       - name: Build docs using Writerside Docker builder
         uses: JetBrains/writerside-github-action@v4
