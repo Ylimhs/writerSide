@@ -50,6 +50,7 @@ jobs:
       - name: Determine target directory based on branch
         id: determine-branch
         run: |
+          echo "$GITHUB_REF"
           if [[ $GITHUB_REF == refs/heads/1.0 ]]; then
             TARGET_DIR="docs/1.0"
           elif [[ $GITHUB_REF == refs/heads/2.0 ]]; then
@@ -59,6 +60,7 @@ jobs:
           fi
           echo "TARGET_DIR=$TARGET_DIR" >> $GITHUB_ENV
           echo "target_dir=$TARGET_DIR" >> $GITHUB_OUTPUT
+          ech0 $TARGET_DIR
 
       - name: Build docs using Writerside Docker builder
         uses: JetBrains/writerside-github-action@v4
