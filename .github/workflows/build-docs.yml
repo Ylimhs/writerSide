@@ -1,4 +1,4 @@
-name: Build and Deploy Documentation
+name: Build documentation
 
 on:
   push:
@@ -30,17 +30,17 @@ jobs:
       - name: Define instance id and artifacts
         id: define-ids
         run: |
-          INSTANCE=${INSTANCE#*/}
+          INSTANCE=${INSTANCE#*/}  # 去除开头部分
           INSTANCE_ID_UPPER=$(echo "$INSTANCE" | tr '[:lower:]' '[:upper:]')
           ARTIFACT="webHelp${INSTANCE_ID_UPPER}2-all.zip"
           ALGOLIA_ARTIFACT="algolia-indexes-${INSTANCE_ID_UPPER}.zip"
 
-          # Print the values
+          # 打印变量
           echo "INSTANCE_ID_UPPER: $INSTANCE_ID_UPPER"
           echo "ARTIFACT: $ARTIFACT"
           echo "ALGOLIA_ARTIFACT: $ALGOLIA_ARTIFACT"
 
-          # Set the environment variables and outputs
+          # 设置环境变量和输出
           echo "INSTANCE_ID_UPPER=$INSTANCE_ID_UPPER" >> $GITHUB_ENV
           echo "ARTIFACT=$ARTIFACT" >> $GITHUB_ENV
           echo "ALGOLIA_ARTIFACT=$ALGOLIA_ARTIFACT" >> $GITHUB_ENV
