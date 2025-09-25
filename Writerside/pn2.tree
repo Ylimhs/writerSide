@@ -2,8 +2,9 @@
 <!DOCTYPE instance-profile
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
-<instance-profile id="Writerside_libraries"
-                 name="Writerside_libraries" start-page="v2.md">
+<instance-profile id="pn2"
+                 name="PersionNotes2"
+                 start-page="persionnotes2.md">
 
-    <toc-element topic="v2.md"/>
+    <toc-element topic="persionnotes2.md"/>
 </instance-profile>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE build-groups SYSTEM "https://resources.jetbrains.com/writerside/1.0/build-groups.dtd">
+<build-groups
+        xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-groups.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <build-group name="all-user-docs">
+        <instance instance-id="pn1" alias="User Guide" path="/1.0"/>
+        <instance instance-id="pn2" alias="Client Reference" path="/2.0"/>
+    </build-group>
+
+</build-groups>
