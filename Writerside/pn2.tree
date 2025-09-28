@@ -4,7 +4,7 @@
 
 <instance-profile id="pn2"
                  name="PersionNotes2"
-                 start-page="v2.md">
+                 start-page="v2.md" >
 
     <toc-element topic="persionnotes2.md"/>
     <toc-element topic="v2.md"/>
