@@ -2,7 +2,7 @@ name: Build documentation
 
 on:
   push:
-    branches: ["main", "1.0", "2.0"]  # 只在 main、1.0、2.0 分支上触发
+    branches: [ "main", "1.0", "2.0" ]  # 只在 main、1.0、2.0 分支上触发
   workflow_dispatch:  # 允许手动触发
 
 permissions:
@@ -81,7 +81,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    needs: [build, test]
+    needs: [ build, test ]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
