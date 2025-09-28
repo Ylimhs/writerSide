@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-groups SYSTEM "https://resources.jetbrains.com/writerside/1.0/instance-groups.dtd">
+<instance-groups  xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/instance-groups.xsd"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <!-- 单个数字 -->
+        <group id="g1" instances="1"/>
+        <!-- 多个数字 -->
+        <group id="g2" instances="1,2,3"/>
+        <!-- 感叹号前缀 -->
+        <group id="g3" instances="!4"/>
+        <!-- 混合 -->
+        <group id="g4" instances="!5, 6, 7"/>
+</instance-groups>
